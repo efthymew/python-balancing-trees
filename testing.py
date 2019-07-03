@@ -28,6 +28,9 @@ class test(unittest.TestCase):
         self.assertIsNone(m.root.right.right.right.entry) # is dummy node
         self.assertIsNone(m.root.right.left.entry) # is dummy node
 
+        self.assertEqual('black', m.root.color)
+        self.assertEqual('red', m.root.right.color)
+
         #all works yay
         
 
