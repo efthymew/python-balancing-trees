@@ -86,6 +86,12 @@ class rb_tree_map:
             return node
         else:
             return self.get_max_in_tree(node.right)
+
+    def get_min_in_tree(self, node):
+        if node.left.entry == None:
+            return node
+        else:
+            return self.get_min_in_tree(node.left)
     
     def is_leaf(self, n):
         return n.left == None and n.right == None
