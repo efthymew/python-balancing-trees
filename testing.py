@@ -21,6 +21,8 @@ class test(unittest.TestCase):
 
         #remove node
         old = m.remove(50) #should promote 40 up
+
+        #self.assertEqual(40, m.root.right.left.parent.entry.key)
         self.assertEqual(4, len(m))
         self.assertEqual('peach', old)
         self.assertEqual('samus', m.root.right.entry.value)
@@ -32,6 +34,21 @@ class test(unittest.TestCase):
         self.assertEqual('red', m.root.right.color)
 
         #all works yay
+
+    def test2(self):
+        m = rb_tree_map()
+        m.put(7, 7)
+        m.put(9, 9)
+        m.put(10,10)
+        #  7
+        #   9
+        #    10
+        self.assertEqual(7, m.root.left.parent.entry.key)
+        m.remove(9)
+        self.assertEqual(10, m.root.right.entry.key)
+        m.remove(10)
+        self.assertIsNone(m.root.right.entry)
+
         
 
 if __name__ == "__main__":

@@ -55,10 +55,32 @@ class rb_tree_map:
     def __remove_node(self, node):
         p = node.parent
         #breaking links
-        if node == p.right:
-            p.right = node.left
+        if node == self.root:
+            if node.left.entry != None:
+                self.root = node.left
+                node.left.parent = None
+            elif node.right.entry != None:
+                self.root = node.right
+                node.right.parent = None
+            else:
+                self.root = self.Node()
         else:
-            p.left = node.right
+            if node == p.right:
+                if node.left.entry != None:
+                    p.right = node.left
+                    node.left.parent = p
+                else:
+                    p.right = node.right
+                    node.right.parent = p
+
+            else:
+                if node.left.entry != None:
+                    p.left = node.left
+                    node.left.parent = p
+                else:
+                    p.left = node.right
+                    node.right.parent = p
+    
     def get_max_in_tree(self, node):
         if node.right.entry == None:
             return node
@@ -79,7 +101,9 @@ class rb_tree_map:
         if n != self.root:
             n.color = 'red'
         n.left = self.Node()
+        n.left.parent = n
         n.right = self.Node()
+        n.right.parent = n
         n.parent = p
 
     def is_internal(self, node):
