@@ -185,16 +185,9 @@ class rb_tree_map:
     def _restructure(self, n):
         p = n.parent
         gp = p.parent
-        # gp                                          p
-        #   p  -> only need to rotate p around gp   gp  n
-        #    n
         if (n == p.left and p == gp.left) or (n == p.right and p == gp.right):
             self.__rotate(p)
             return p
-        # gp   rotate n around p then around gp
-        #   p  -->   gp             gp
-        #  n           n          n    p
-        #               p
         else:
             self.__rotate(n)
             self.__rotate(n)
