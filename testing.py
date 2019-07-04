@@ -49,6 +49,15 @@ class test(unittest.TestCase):
         m.remove(10)
         self.assertIsNone(m.root.right.entry)
 
+    def testReid(self):
+        m = rb_tree_map()
+        self.assertIsNone(m.get(9))
+        m.put(9, 'marth')
+        self.assertEqual(1, len(m))
+        m.remove(9)
+        self.assertIsNone(m.get(9))
+
+
         
 
 if __name__ == "__main__":

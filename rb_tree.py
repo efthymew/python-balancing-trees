@@ -67,19 +67,23 @@ class rb_tree_map:
         else:
             if node == p.right:
                 if node.left.entry != None:
-                    p.right = node.left
-                    node.left.parent = p
+                    self.__link(p, node.left, True)
                 else:
-                    p.right = node.right
-                    node.right.parent = p
+                    self.__link(p, node.right, True)
 
             else:
                 if node.left.entry != None:
-                    p.left = node.left
-                    node.left.parent = p
+                    self.__link(p, node.left, False)
                 else:
-                    p.left = node.right
-                    node.right.parent = p
+                    self.__link(p, node.right, False)
+                    
+    # links two nodes together
+    def __link(self, parent, child, right):
+        child.parent = parent
+        if right:
+            parent.right = child
+        else:
+            parent.left = child
     
     def get_max_in_tree(self, node):
         if node.right.entry == None:
@@ -125,15 +129,15 @@ class rb_tree_map:
         return self.size
     
     '''
-    def _put_repair(self, node):
+    def __put_repair(self, node):
 
-    def _remove_repair(self, node):
-
-    def __rotate(self, node):
-
-    def __restructure(self, node):
-
+    def __remove_repair(self, node):
     '''
+    #def __rotate(self, node):
+
+    #def __restructure(self, node):
+
+
     class Entry:
         def __init__(self, key, value):
             self.key = key
