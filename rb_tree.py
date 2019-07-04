@@ -1,6 +1,10 @@
 class rb_tree_map:
     def __init__(self):
         self.root = self.Node()
+        #couldnt figure out __iter__ so did this instead lol
+        self.entries = []
+        self.keys = []
+        self.values = []
         self.size = 0
 
     def _seek(self, n, key, last=None):
@@ -26,6 +30,11 @@ class rb_tree_map:
 
         if self.is_leaf(node):
             self._add_node(node, e, p)
+            self.entries.append(e)
+            self.keys.append(key)
+            self.values.append(value)
+            if self.root != node:
+                self.__check_and_fix_double_red(node)
             # remedy node
             self.size += 1
         else:
@@ -39,6 +48,9 @@ class rb_tree_map:
             return None
         else:
             old_val = node.entry.value
+            self.entries.remove(node.entry)
+            self.keys.remove(key)
+            self.values.remove(old_val)
             if node.left.entry != None and node.right.entry != None:
                 #replace with max of left subtree and delete other node
                 newNode = self.get_max_in_tree(node.left)
@@ -86,13 +98,13 @@ class rb_tree_map:
             parent.left = child
     
     def get_max_in_tree(self, node):
-        if node.right.entry == None:
+        if self.is_leaf(node.right):
             return node
         else:
             return self.get_max_in_tree(node.right)
 
     def get_min_in_tree(self, node):
-        if node.left.entry == None:
+        if self.is_leaf(node.left):
             return node
         else:
             return self.get_min_in_tree(node.left)
@@ -128,14 +140,65 @@ class rb_tree_map:
     def __len__(self):
         return self.size
     
-    '''
-    def __put_repair(self, node):
+    
+    def __check_and_fix_double_red(self, node):
+        p = node.parent
+        if p.color == 'red':
+            uncle = self.get_sibling(p)
+            if uncle.color == 'black':
+                node = self._restructure(node)
+                node.color = 'black'
+                node.left.color = 'red'
+                node.right.color = 'red'
+            else:
+                uncle.color = 'black'
+                p.color = 'black'
+                if p.parent != self.root:
+                    p.parent.color = 'red'
+                    self.__check_and_fix_double_red(p.parent)
+
+
 
     def __remove_repair(self, node):
-    '''
-    #def __rotate(self, node):
+        pass
 
-    #def __restructure(self, node):
+    def __rotate(self, node):
+        p = node.parent
+        gp = p.parent
+        if gp == None:
+            self.root = node
+            node.parent = None
+        else:
+            if p == gp.right:
+                self.__link(gp, node, True)
+            else:
+                self.__link(gp, node, False)
+
+        if node == p.right:
+            self.__link(p, node.left, True)
+            self.__link(node, p, False)
+        else:
+            self.__link(p, node.right, False)
+            self.__link(node, p, True)
+
+    
+    def _restructure(self, n):
+        p = n.parent
+        gp = p.parent
+        # gp                                          p
+        #   p  -> only need to rotate p around gp   gp  n
+        #    n
+        if (n == p.left and p == gp.left) or (n == p.right and p == gp.right):
+            self.__rotate(p)
+            return p
+        # gp   rotate n around p then around gp
+        #   p  -->   gp             gp
+        #  n           n          n    p
+        #               p
+        else:
+            self.__rotate(n)
+            self.__rotate(n)
+            return n
 
 
     class Entry:
