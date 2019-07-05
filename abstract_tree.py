@@ -34,8 +34,7 @@ class abstract_tree_map():
             self.entries.append(e)
             self.keys.append(key)
             self.values.append(value)
-            if self.root != node:
-                self._remedy_insert(node)
+            self._remedy_insert(node)
             # remedy node
             self.size += 1
         else:
@@ -60,7 +59,12 @@ class abstract_tree_map():
                 newNode = self.get_max_in_tree(node.left)
                 node.entry = newNode.entry
                 node = newNode
+            if node.left.entry != None:
+                child = node.left
+            else:
+                child = node.right
             self._remove_node(node)
+            self._remedy_remove(child)
             self.size -= 1
             # remedy double black
 
@@ -111,17 +115,7 @@ class abstract_tree_map():
         n.right = self.Node()
         n.right.parent = n
         n.parent = p
-        n.height = 1
-        #if n is not the root and doesnt have sibling, height of all nodes above
-        if n != self.root and self.get_sibling(n).entry == None:
-            self._propogate_height(n)
 
-    def _propogate_height(self, node):
-        p = node.parent
-        if p != None:
-            p.height += 1
-            self._propogate_height(p)
-    
     def is_leaf(self, n):
         return n.left == None and n.right == None
 
@@ -165,6 +159,9 @@ class abstract_tree_map():
         else:
             self._link(p, node.right, False)
             self._link(node, p, True)
+        #fixing heights
+        node.height += 1
+        p.height -= 1
 
     
     def _restructure(self, n):

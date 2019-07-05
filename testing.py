@@ -101,21 +101,14 @@ class test(unittest.TestCase):
         self.assertEqual(m.root.color, 'black')
         self.assertEqual(m.root.left.color, 'red')
         self.assertEqual(m.root.right.color, 'red')
-
-    def test_height_of_nodes(self):
+    
+    def test_rotate(self):
         m = rb_tree_map()
-        m.put(50, 50)
-        m.put(0, 0)
-        self.assertEqual(2, m.root.height)
-        m.put(100, 100)
-        self.assertEqual('black', m.root.color)
-        self.assertEqual('red', m.root.right.color, m.root.left.color)
-        self.assertEqual(1, m.root.right.height, m.root.left.height)
-        self.assertEqual(2, m.root.height)
-        self.assertFalse(m.is_leaf(m.root.left))
-        m.put(200, 200)
-        self.assertEqual(4, len(m))
-        self.assertEqual(3, m.root.height)
+        m.put(1,1)
+        m.put(3,3)
+        m._rotate(m.root.right)
+        self.assertEqual(3, m.root.entry.key)
+
 
 
 
