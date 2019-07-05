@@ -84,11 +84,13 @@ class test(unittest.TestCase):
         m.put(100, 100)
         self.assertEqual('red', m.root.right.color)
         self.assertEqual('red', m.root.left.color)
+        #print(m.root.left.color)
         m.put(500, 500)
         self.assertEqual('black', m.root.color)
         self.assertEqual('black', m.root.right.color)
         self.assertEqual('black', m.root.left.color)
         self.assertEqual('red', m.root.right.right.color)
+        #print(m.root.left.color)
 
         #check condition where trinode restructure occurs
         m = rb_tree_map()
@@ -99,6 +101,22 @@ class test(unittest.TestCase):
         self.assertEqual(m.root.color, 'black')
         self.assertEqual(m.root.left.color, 'red')
         self.assertEqual(m.root.right.color, 'red')
+
+    def test_height_of_nodes(self):
+        m = rb_tree_map()
+        m.put(50, 50)
+        m.put(0, 0)
+        self.assertEqual(2, m.root.height)
+        m.put(100, 100)
+        self.assertEqual('black', m.root.color)
+        self.assertEqual('red', m.root.right.color, m.root.left.color)
+        self.assertEqual(1, m.root.right.height, m.root.left.height)
+        self.assertEqual(2, m.root.height)
+        self.assertFalse(m.is_leaf(m.root.left))
+        m.put(200, 200)
+        self.assertEqual(4, len(m))
+        self.assertEqual(3, m.root.height)
+
 
 
 
