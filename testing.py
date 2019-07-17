@@ -1,5 +1,5 @@
-from rb_tree import rb_tree_map
 import unittest
+from rb_tree import rb_tree_map
 
 class test(unittest.TestCase):
 
