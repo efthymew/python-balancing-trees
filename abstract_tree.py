@@ -159,9 +159,8 @@ class abstract_tree_map():
         else:
             self._link(p, node.right, False)
             self._link(node, p, True)
-        #fixing heights
-        node.height += 1
-        p.height -= 1
+
+        
 
     
     def _restructure(self, n):
